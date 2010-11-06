@@ -1,6 +1,6 @@
 package POE::Component::Client::Feed;
 BEGIN {
-  $POE::Component::Client::Feed::VERSION = '0.001';
+  $POE::Component::Client::Feed::VERSION = '0.002';
 }
 # ABSTRACT: Event based feed client
 
@@ -13,10 +13,12 @@ use POE qw(
 use HTTP::Request;
 use XML::Feed;
 
+our $VERSION ||= '0.0development';
+
 has http_agent => (
 	is => 'ro',
 	isa => 'Str',
-	default => sub { 'POE::Component::Client::Feed/0.0' },
+	default => sub { 'POE::Component::Client::Feed/'.$VERSION },
 );
 
 has alias => (
@@ -144,7 +146,7 @@ POE::Component::Client::Feed - Event based feed client
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
