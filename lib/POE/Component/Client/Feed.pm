@@ -1,6 +1,6 @@
 package POE::Component::Client::Feed;
 BEGIN {
-  $POE::Component::Client::Feed::VERSION = '0.002';
+  $POE::Component::Client::Feed::VERSION = '0.003';
 }
 # ABSTRACT: Event based feed client
 
@@ -18,7 +18,7 @@ our $VERSION ||= '0.0development';
 has http_agent => (
 	is => 'ro',
 	isa => 'Str',
-	default => sub { 'POE::Component::Client::Feed/'.$VERSION },
+	default => sub { __PACKAGE__.'/'.$VERSION },
 );
 
 has alias => (
@@ -91,8 +91,6 @@ has http_client => (
 	},
 );
 
-use Data::Dumper;
-
 sub START {
 	my ( $kernel, $self ) = @_[ KERNEL, OBJECT ];
 	$kernel->alias_set($self->alias);
@@ -146,7 +144,7 @@ POE::Component::Client::Feed - Event based feed client
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
