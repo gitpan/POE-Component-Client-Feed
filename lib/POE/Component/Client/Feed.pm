@@ -1,6 +1,6 @@
 package POE::Component::Client::Feed;
 BEGIN {
-  $POE::Component::Client::Feed::VERSION = '0.004';
+  $POE::Component::Client::Feed::VERSION = '0.005';
 }
 # ABSTRACT: Event based feed client
 
@@ -148,7 +148,7 @@ POE::Component::Client::Feed - Event based feed client
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 

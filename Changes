@@ -1,5 +1,8 @@
 Revision history for POE-Component-Client-Feed
 
+0.005     2010-11-08 22:19:53 Europe/Berlin
+	- Fixed tests (BinGOs++, kentnl++) 
+
 0.004     2010-11-06 20:49:28 Europe/Berlin
 
 0.003     2010-11-06 18:54:59 Europe/Berlin
