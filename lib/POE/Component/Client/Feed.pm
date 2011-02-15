@@ -1,6 +1,9 @@
 package POE::Component::Client::Feed;
 BEGIN {
-  $POE::Component::Client::Feed::VERSION = '0.005';
+  $POE::Component::Client::Feed::AUTHORITY = 'cpan:GETTY';
+}
+BEGIN {
+  $POE::Component::Client::Feed::VERSION = '0.900';
 }
 # ABSTRACT: Event based feed client
 
@@ -14,6 +17,11 @@ use HTTP::Request;
 use XML::Feed;
 
 our $VERSION ||= '0.0development';
+
+has logger => (
+	is => 'rw',
+	predicate => 'has_logger',
+);
 
 has http_agent => (
 	is => 'ro',
@@ -61,6 +69,8 @@ has http_keepalive => (
 	is => 'ro',
 	lazy => 1,
 	default => sub {
+		my $self = shift;
+		$self->logger->info($self->logger_prefix.'Startup POE::Component::Client::Keepalive') if $self->has_logger;
 		POE::Component::Client::Keepalive->new(
 			keep_alive    => 20, # seconds to keep connections alive
 			max_open      => 100, # max concurrent connections - total
@@ -81,6 +91,7 @@ has http_client => (
 	lazy => 1,
 	default => sub {
 		my ( $self ) = @_;
+		$self->logger->info($self->logger_prefix.'Startup POE::Component::Client::HTTP') if $self->has_logger;
 		POE::Component::Client::HTTP->spawn(
 			Agent     => $self->http_agent,
 			Alias     => $self->_http_alias,
@@ -98,6 +109,7 @@ sub START {
 
 event 'request' => sub {
 	my ( $self, $sender, $feed, $response_event, $tag ) = @_[ OBJECT, SENDER, ARG0..$#_ ];
+	$self->logger->debug($self->logger_prefix.'Request of feed '.$feed.' requested') if $self->has_logger;
 	$response_event = 'feed_received' if !$response_event;
 	my $request;
 	if (ref $feed) {
@@ -116,11 +128,13 @@ event 'request' => sub {
 
 event 'http_received' => sub {
 	my ( $self, @args ) = @_[ OBJECT, ARG0..$#_ ];
+	$self->logger->debug($self->logger_prefix.'HTTP Received') if $self->has_logger;
 	my $request_packet = $args[0];
 	my $response_packet = $args[1];
 	my $request_object  = $request_packet->[0];
 	my $response_object = $response_packet->[0];
 	my ( $sender, $feed, $response_event, $tag ) = @{$request_packet->[1]};
+	$self->logger->debug($self->logger_prefix.'Received from '.$feed) if $self->has_logger;
 	my $content = $response_object->content;
 	my $xml_feed;
 	eval {
@@ -132,9 +146,15 @@ event 'http_received' => sub {
 	# if (ref $response_event) {
 		# $response_event->postback->($xml_feed);
 	# } else {
+		$self->logger->debug($self->logger_prefix.'Post result') if $self->has_logger;
 		POE::Kernel->post( $sender, $response_event, $request_object, $xml_feed, $tag );
 	# }
 };
+
+sub logger_prefix {
+	my $self = shift;
+	__PACKAGE__.' ('.$self->get_session_id.') ';
+}
 
 1;
 
@@ -148,7 +168,7 @@ POE::Component::Client::Feed - Event based feed client
 
 =head1 VERSION
 
-version 0.005
+version 0.900
 
 =head1 SYNOPSIS
 
