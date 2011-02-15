@@ -27,7 +27,7 @@ my %WriteMakefileArgs = (
     'POE::Component::Client::HTTP' => '0',
     'XML::Feed' => '0'
   },
-  'VERSION' => '0.900',
+  'VERSION' => '0.901',
   'test' => {
     'TESTS' => 't/*.t'
   }

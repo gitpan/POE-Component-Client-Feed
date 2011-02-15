@@ -24,7 +24,7 @@ requires:
 resources:
   homepage: http://github.com/Getty/p5-poe-component-client-feed/tree
   repository: git://github.com/Getty/p5-poe-component-client-feed.git
-version: 0.900
+version: 0.901
 x_Dist_Zilla:
   plugins:
     -

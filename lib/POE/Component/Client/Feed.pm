@@ -3,7 +3,7 @@ BEGIN {
   $POE::Component::Client::Feed::AUTHORITY = 'cpan:GETTY';
 }
 BEGIN {
-  $POE::Component::Client::Feed::VERSION = '0.900';
+  $POE::Component::Client::Feed::VERSION = '0.901';
 }
 # ABSTRACT: Event based feed client
 
@@ -19,6 +19,7 @@ use XML::Feed;
 our $VERSION ||= '0.0development';
 
 has logger => (
+	isa => 'Object',
 	is => 'rw',
 	predicate => 'has_logger',
 );
@@ -27,6 +28,7 @@ has http_agent => (
 	is => 'ro',
 	isa => 'Str',
 	default => sub { __PACKAGE__.'/'.$VERSION },
+	required => 1,
 );
 
 has alias => (
@@ -61,6 +63,7 @@ has _http_alias => (
 has http_timeout => (
 	is => 'ro',
 	isa => 'Int',
+	required => 1,
 	default => sub { 30 },
 );
 
@@ -83,6 +86,7 @@ has http_keepalive => (
 has http_followredirects => (
 	is => 'ro',
 	isa => 'Int',
+	required => 1,
 	default => sub { 5 },
 );
 
@@ -168,7 +172,7 @@ POE::Component::Client::Feed - Event based feed client
 
 =head1 VERSION
 
-version 0.900
+version 0.901
 
 =head1 SYNOPSIS
 
